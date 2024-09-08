@@ -1,8 +1,7 @@
-// src/App.js
-import React, { useState, useEffect } from 'react';
-import Question from './components/Question';
-import Result from './components/Result';
-import './App.css'; // Add this line to include your CSS file
+import React, { useState, useEffect } from "react";
+import Question from "./components/Question";
+import Result from "./components/Result";
+import "./App.css";
 
 const App = () => {
   const [questions, setQuestions] = useState([]);
@@ -10,14 +9,35 @@ const App = () => {
   const [score, setScore] = useState({ correct: 0, incorrect: 0 });
   const [isGameOver, setIsGameOver] = useState(false);
 
-  useEffect(() => {
-    const fetchQuestions = async () => {
-      const response = await fetch('https://opentdb.com/api.php?amount=10');
+  // const [responseCode, setResponseCode] = useState(null);
+
+  const fetchQuestions = async () => {
+    try {
+      const response = await fetch("https://opentdb.com/api.php?amount=10");
       const data = await response.json();
-      setQuestions(data.results);
-    };
-    fetchQuestions();
+      // setResponseCode(data.response_code);
+
+      if (data.response_code === 0) {
+        setQuestions(data.results);
+      } else if (data.response_code === 5) {
+        const timer = setTimeout(() => {
+          fetchQuestions();
+        }, 1000);
+      }
+    } catch (error) {
+      console.error("Error fetching questions:", error);
+    }
+  };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      fetchQuestions();
+    }, 100);
+
+    return () => clearTimeout(timer);
   }, []);
+
+  console.log("questions:", questions);
 
   const handleAnswerSubmit = (isCorrect) => {
     if (isCorrect) {
@@ -34,7 +54,11 @@ const App = () => {
   };
 
   if (isGameOver) {
-    return <Result score={score} totalQuestions={questions.length} />;
+    return (
+      <div className="App">
+        <Result score={score} totalQuestions={questions.length} />
+      </div>
+    );
   }
 
   return (
@@ -44,6 +68,7 @@ const App = () => {
           questionData={questions[currentQuestionIndex]}
           onAnswerSubmit={handleAnswerSubmit}
           isLastQuestion={currentQuestionIndex === questions.length - 1}
+          currentQuestionIndex={currentQuestionIndex}
         />
       )}
     </div>

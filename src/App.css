@@ -42,18 +42,21 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  background-color: #f7f7f7;
+  min-height: 94.4vh;
+  background-color: white;
   font-family: Arial, sans-serif;
   padding: 20px;
+  background-image: url(bg.jpg);
+  background-size: cover;
+  /* background-repeat: no-repeat; */
 }
 .question-container {
   background: #fff;
   border-radius: 8px;
-  padding: 20px;
+  padding: 50px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 600px;
+  max-width: 700px;
   margin: 20px auto;
 }
 
@@ -65,7 +68,7 @@
 
 .submit-button,
 .next-button {
-  margin-top: 20px;
+  margin-top: 50px;
   padding: 10px 20px;
   font-size: 16px;
   background-color: #007bff;
@@ -91,4 +94,9 @@
 
 .wrong {
   color: red;
+}
+.result-container{
+  background-color: white;
+  padding: 20px;
+  border-radius: 20px;
 }
